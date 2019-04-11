@@ -1,0 +1,24 @@
+{
+  "name": "mivabot",
+  "version": "1.0.0",
+  "description": "mivabot",
+  "main": "init.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleHenFo/mivabot.git"
+  },
+  "keywords": [
+    "bot",
+    "discord",
+    "twitch"
+  ],
+  "author": "Rekondo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OleHenFo/mivabot/issues"
+  },
+  "homepage": "https://github.com/OleHenFo/mivabot#readme"
+}
