@@ -62,3 +62,6 @@ typings/
 
 # auth
 auth/
+
+# misc
+package-lock.json
