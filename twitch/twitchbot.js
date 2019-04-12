@@ -3,7 +3,7 @@ const tmi = require('tmi.js');
 const identity = require('../auth/twitchidentity.json');
 const opts = {identity,channels:['miva']}
 const twitch = new tmi.client(opts);
-let commands = require('./commands.json');
+let commands = require('../twitch/commands.json');
 
 let timeout = Date.now();
 
@@ -42,7 +42,7 @@ function handleChat(channel, user, msg){
           if (user.mod||user.badges.broadcaster == 1){
             if (stringArray.length>1){
               let shoutout = stringArray[1];
-              fs.writeFileSync('./commands.json', JSON.stringify(commands));
+              fs.writeFileSync('../twitch/commands.json', JSON.stringify(commands));
               response = `@${shoutout} https://www.twitch.tv/${shoutout} <3`;
             } else {
               response = `@${username} Missing arguments!`;
@@ -59,7 +59,7 @@ function handleChat(channel, user, msg){
               
               if (!commands.hasOwnProperty(newCommand)){
                 commands[newCommand] = newResponse;
-                fs.writeFileSync('./commands.json', JSON.stringify(commands));
+                fs.writeFileSync('../twitch/commands.json', JSON.stringify(commands));
                 response = `@${username} Added new command: !${newCommand}`;
               } else {
                 response = `@${username} That command already exists!`;
