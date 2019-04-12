@@ -1,3 +1,4 @@
+const fs = require('fs');
 const tmi = require('tmi.js');
 const identity = require('../auth/twitchidentity.json');
 const opts = {identity,channels:['miva']}
