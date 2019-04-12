@@ -58,7 +58,7 @@ function handleChat(channel, user, msg){
               
               if (!commands.hasOwnProperty(newCommand)){
                 commands[newCommand] = newResponse;
-                fs.writeFileSync('./commands.json', JSON.stringify(commands));
+                fs.writeFileSync('./twitch/commands.json', JSON.stringify(commands));
                 response = `@${username} Added new command: !${newCommand}`;
               } else {
                 response = `@${username} That command already exists!`;
@@ -77,7 +77,7 @@ function handleChat(channel, user, msg){
               
               if (commands.hasOwnProperty(toRemove)){
                 delete commands[toRemove];
-                fs.writeFileSync('./commands.json', JSON.stringify(commands));
+                fs.writeFileSync('./twitch/commands.json', JSON.stringify(commands));
                 response = `@${username} removed command: !${toRemove}`;
               } else {
                 response = `@${username} That command doesn't exists!`;
