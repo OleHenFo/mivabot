@@ -4,3 +4,4 @@ const Webhook = require('./webhook/webhook.js');
 const Misc = require('./misc/misc.js');
 
 Discordbot.init();
+Twitchbot.init();

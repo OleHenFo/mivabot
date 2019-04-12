@@ -2,6 +2,7 @@ const tmi = require('tmi.js');
 const identity = require('../auth/twitchidentity.json');
 const opts = {identity,channels:['miva']}
 const twitch = new tmi.client(opts);
+let commands = require('./commands.json');
 
 let timeout = Date.now();
 
