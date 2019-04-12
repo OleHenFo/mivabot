@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const auth = require('../auth/discordAuth.json');
+const fs = require('fs');
 const client = new Discord.Client();
+let commands = require('./commands.json');
 
 // Event handles
 client.on('ready', () => {
@@ -8,13 +10,35 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg) => {
-  console.log(msg.mentions.users);
+  if (!msg.author.bot){
+    if (msg.isMemberMentioned(client.user)){
+      let array = msg.content.split(' ');
+      if (array.length>1){
+        let mention = array[0];
+        if (mention == `<@${client.user.id}>`){
+          handleMessage(msg,array);
+        }
+      }
+    }
+  }
 });
+
+function handleMessage(msg,array){
+
+}
+
+function getCommands(){
+  
+}
+
+function saveCommand(cmd){
+
+}
 
 // Exports
 (function() {
   module.exports.init = function() {
-    client.login(discordAuth.token);
+    client.login(auth.token);
     return client;
   }
 }());
