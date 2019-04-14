@@ -40,12 +40,16 @@ function handleChat(channel, user, msg){
           response =  `@${username} Commands: !add, !${Object.keys(commands).join(', !')}`;
           break;
         case 'play':
+          if (user.mod||user.badges.broadcaster == 1){
             if (stringArray.length>1){
               if (stringArray[1].length>8){
                 discord.playFromTwitch(stringArray[1]);
                 response = `@${username} started a song!`
               }
             }
+          } else {
+            response = `@${username} only mods can play songs!`
+          }
           break;
         case 'so':
           if (user.mod||user.badges.broadcaster == 1){
