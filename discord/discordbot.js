@@ -76,16 +76,25 @@ function handleMessage(msg,array){
 function playMusic(connection,url){
   let split = url.split("?t=");
   if (split.length>1){
-    stream = ytdl(split[0],{filter:'audioonly',bitrate:192000,volume:0.1,seek:split[1]});
+    stream = ytdl(split[0],{filter:'audioonly',bitrate:132000});
+    dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2,seek:split[1]});
   } else {
-    stream = ytdl(url,{filter:'audioonly',bitrate:192000,volume:0.1});
+    stream = ytdl(url,{filter:'audioonly',bitrate:132000});
+    dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2});
   }
-  dispatcher = connection.playStream(stream);
   dispatcher.on('end', () => {
     connection.disconnect();
   });
   dispatcher.on('error', () => {
     connection.disconnect();
+  });
+}
+
+function playFromTwitch(url){
+  let channel = client.guilds.get('380068349255745536').channels.get('380068350145069070');
+  channel.join()
+  .then(connection => {
+    playMusic(connection,url);
   });
 }
 
@@ -136,4 +145,7 @@ function liveNotification(event,test){
   module.exports.liveNotification = (event,test) => {
     liveNotification(event,test);
   };
+  module.exports.playFromTwitch = (url) => {
+    playFromTwitch(url);
+  }
 }());

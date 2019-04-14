@@ -3,6 +3,7 @@ const tmi = require('tmi.js');
 const identity = require('../auth/twitchidentity.json');
 const opts = {identity,channels:['miva']}
 const twitch = new tmi.client(opts);
+const discord = require('../discord/discordbot.js');
 let commands = require('../twitch/commands.json');
 
 let timeout = Date.now();
@@ -37,6 +38,14 @@ function handleChat(channel, user, msg){
       switch(command) {
         case 'help':
           response =  `@${username} Commands: !add, !${Object.keys(commands).join(', !')}`;
+          break;
+        case 'play':
+            if (stringArray.length>1){
+              if (stringArray[1].length>8){
+                discord.playFromTwitch(stringArray[1]);
+                response = `@${username} started a song!`
+              }
+            }
           break;
         case 'so':
           if (user.mod||user.badges.broadcaster == 1){
