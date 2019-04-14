@@ -74,7 +74,7 @@ function handleMessage(msg,array){
 }
 
 function playMusic(connection,url){
-  stream = ytdl(url,{filter:'audioonly',bitrate:192000});
+  stream = ytdl(url,{filter:'audioonly',bitrate:192000,volume:0.4});
   dispatcher = connection.playStream(stream);
   dispatcher.on('end', () => {
     connection.disconnect();
