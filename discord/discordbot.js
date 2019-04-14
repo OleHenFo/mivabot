@@ -1,4 +1,3 @@
-
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const auth = require('../auth/discordAuth.json');
@@ -10,6 +9,14 @@ let commands = require('./commands.json');
 client.on('ready', () => {
   console.log(`Discord logged in as ${client.user.tag}!`);
 });
+
+client.on('disconnect', () => {
+  client.login(auth.token);
+})
+
+client.on('error', (error) => {
+  console.log(error);
+})
 
 client.on('message', (msg) => {
   if (!msg.author.bot){
@@ -120,7 +127,6 @@ function liveNotification(event,test){
 (function() {
   module.exports.init = () => {
     client.login(auth.token);
-    return client;
   }
   module.exports.liveNotification = (event,test) => {
     liveNotification(event,test);
