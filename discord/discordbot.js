@@ -74,7 +74,7 @@ function handleMessage(msg,array){
 }
 
 function playMusic(connection,url){
-  let split = url.split("?=")
+  let split = url.split("?t=");
   if (split.length>1){
     stream = ytdl(split[0],{filter:'audioonly',bitrate:192000,volume:0.1,seek:split[1]});
   } else {
