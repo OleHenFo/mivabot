@@ -47,10 +47,10 @@ function handleMessage(msg,array){
               .then(connection => {
                 playMusic(connection,args[0]);
               })
-              .catch(msg.channel.send);
+              .catch(msg.reply('Error when connecting to voice!'));
           } else {
             if (client.voiceConnections.size > 0){
-              playmusic(client.voiceConnections.get(msg.guild),args[0])
+              playmusic(client.voiceConnections.get(msg.guild),args[0]);
             }
           }
         } else {
@@ -63,6 +63,7 @@ function handleMessage(msg,array){
     }
     case 'stop':{
       if (client.voiceConnections.has(msg.guild.id)){
+        playing = false;
         client.voiceConnections.get(msg.guild.id).disconnect();
       }
       break;
@@ -83,17 +84,9 @@ function handleMessage(msg,array){
 
 function playMusic(connection,url){
   let split = url.split("?t=");
-  if (!playing){
-    playing = true;
-    if (split.length>1){
-      stream = ytdl(split[0],{filter:'audioonly',bitrate:132000});
-      dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2,seek:split[1]});
-    } else {
-      stream = ytdl(url,{filter:'audioonly',bitrate:132000});
-      dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2});
-    }
-  } else {
-
+  if (split.length>1){
+    stream = ytdl(split[0],{filter:'audioonly',bitrate:132000});
+    dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2,seek:split[1]});
   }
   dispatcher.on('end', () => {
     playing = false;
