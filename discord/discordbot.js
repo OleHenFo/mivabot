@@ -5,6 +5,8 @@ const fs = require('fs');
 const client = new Discord.Client();
 let commands = require('./commands.json');
 
+let playing = false;
+
 // Event handles
 client.on('ready', () => {
   console.log(`Discord logged in as ${client.user.tag}!`);
@@ -40,11 +42,17 @@ function handleMessage(msg,array){
     case 'play': {
       if (msg.member.voiceChannel) {
         if (args.length>0){
-          msg.member.voiceChannel.join()
-            .then(connection => {
-              playMusic(connection,args[0]);
-            })
-            .catch(msg.channel.send);
+          if (!playing){
+            msg.member.voiceChannel.join()
+              .then(connection => {
+                playMusic(connection,args[0]);
+              })
+              .catch(msg.channel.send);
+          } else {
+            if (client.voiceConnections.size > 0){
+              playmusic(client.voiceConnections.get(msg.guild),args[0])
+            }
+          }
         } else {
           msg.reply('You need to specify a youtube url!');
         }
@@ -75,17 +83,24 @@ function handleMessage(msg,array){
 
 function playMusic(connection,url){
   let split = url.split("?t=");
-  if (split.length>1){
-    stream = ytdl(split[0],{filter:'audioonly',bitrate:132000});
-    dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2,seek:split[1]});
+  if (!playing){
+    playing = true;
+    if (split.length>1){
+      stream = ytdl(split[0],{filter:'audioonly',bitrate:132000});
+      dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2,seek:split[1]});
+    } else {
+      stream = ytdl(url,{filter:'audioonly',bitrate:132000});
+      dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2});
+    }
   } else {
-    stream = ytdl(url,{filter:'audioonly',bitrate:132000});
-    dispatcher = connection.playStream(stream,{bitrate:132000,volume:0.2});
+
   }
   dispatcher.on('end', () => {
+    playing = false;
     connection.disconnect();
   });
   dispatcher.on('error', () => {
+    playing = false;
     connection.disconnect();
   });
 }
